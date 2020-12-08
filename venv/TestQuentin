@@ -42,6 +42,16 @@ def nation(code):
     }
     return switcher.get(code,"pas sûr de la nationalité")
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 # %%
 from passporteye import read_mrz
 import glob
@@ -52,8 +62,8 @@ for i in range(len(listeChemin)):
     mrz = read_mrz(listeChemin[i])
     try:
         mrz_data = mrz.to_dict()
-        print(listeChemin[i].split("\\")[-1] + " est " + nation(mrz_data['nationality']))
+        print(bcolors.WARNING + listeChemin[i].split("\\")[-1] + " est " + nation(mrz_data['nationality']))
     except:
-        print(listeChemin[i].split("\\")[-1] + " est non identifié")
+        print(bcolors.FAIL + listeChemin[i].split("\\")[-1] + " est non identifié")
 
 # %%
