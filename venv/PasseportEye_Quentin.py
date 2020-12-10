@@ -48,8 +48,10 @@ from PIL import Image
 from passporteye import read_mrz
 import glob
 import pandas as pd
+from translate import Translator
 
 iso = pd.read_csv("C:/Users/qlachaussee/Documents/CNAM 2/Python/Fichier_de_donnees/ISO.csv", sep=";")
+translator= Translator(to_lang="fr")
 
 listeChemin = glob.glob("C:/Users/qlachaussee/Documents/CNAM 2/Python/Fichier_de_donnees/Passeport interieur/*.jpg")
 
@@ -57,7 +59,7 @@ for i in range(len(listeChemin)):
     mrz = read_mrz(listeChemin[i])
     try:
         mrz_data = mrz.to_dict()
-        print(bcolors.WARNING + listeChemin[i].split("\\")[-1] + " est " + iso.loc[iso["code"]==mrz_data['country'], "nationality"].values[0] + " car " + mrz_data['country'])
+        print(bcolors.WARNING + listeChemin[i].split("\\")[-1] + " vient de " + translator.translate(iso.loc[iso["code"]==mrz_data['country'], "nationality"].values[0]) + " car " + mrz_data['country'])
     except:
         print(bcolors.FAIL + listeChemin[i].split("\\")[-1] + " n'est pas identifié")
 
@@ -67,8 +69,10 @@ from PIL import Image
 from passporteye import read_mrz
 import glob
 import pandas as pd
+from translate import Translator
 
 iso = pd.read_csv("C:/Users/qlachaussee/Documents/CNAM 2/Python/Fichier_de_donnees/ISO.csv", sep=";")
+translator= Translator(to_lang="fr")
 
 listeChemin = glob.glob("C:/Users/qlachaussee/Documents/CNAM 2/Python/Fichier_de_donnees/Passeport interieur/*.jpg")
 
@@ -76,7 +80,7 @@ for i in range(len(listeChemin)):
     mrz = read_mrz(listeChemin[i])
     try:
         mrz_data = mrz.to_dict()
-        print(bcolors.WARNING + listeChemin[i].split("\\")[-1] + " est " + iso.loc[iso["code"]==mrz_data['nationality'], "nationality"].values[0] + " car " + mrz_data['country'])
+        print(bcolors.WARNING + listeChemin[i].split("\\")[-1] + " vient de " + translator.translate(iso.loc[iso["code"]==mrz_data['country'], "nationality"].values[0]) + " car " + mrz_data['country'])
     except:
         print(bcolors.FAIL + listeChemin[i].split("\\")[-1] + " n'est pas identifié")
 
@@ -94,4 +98,11 @@ for i in range(len(listeChemin)):
         print(get_card_from_image(listeChemin[i]))
     except:
         print("e")
+# %%
+from translate import Translator
+translator= Translator(to_lang="fr")
+translation = translator.translate("Belgium")
+# %%
+
+
 # %%
