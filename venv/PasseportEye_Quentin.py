@@ -70,7 +70,7 @@ import pandas as pd
 
 iso = pd.read_csv("C:/Users/qlachaussee/Documents/CNAM 2/Python/Fichier_de_donnees/ISO.csv", sep=";")
 
-listeChemin = glob.glob("C:/Users/qlachaussee/Documents/CNAM 2/Python/Fichier_de_donnees/Passeport interieur/*.jpg")
+listeChemin = glob.glob("C:/Users/qlachaussee/Documents/CNAM 2/Python/Fichier_de_donnees/Visa/*.jpg")
 
 for i in range(len(listeChemin)):
     mrz = read_mrz(listeChemin[i])
