@@ -1,9 +1,3 @@
-#%%
-from pandas.io.parsers import read_csv, read_table
-import pytesseract as pt
-
-pt.pytesseract.tesseract_cmd = r'C:\Users\qlachaussee\AppData\Local\Tesseract-OCR\tesseract.exe'
-
 # %%
 import pytesseract as tess
 from PIL import Image
