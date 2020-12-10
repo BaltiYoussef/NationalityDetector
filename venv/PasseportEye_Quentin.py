@@ -1,9 +1,3 @@
-#%%
-from pandas.io.parsers import read_csv, read_table
-import pytesseract as pt
-
-pt.pytesseract.tesseract_cmd = r'C:\Users\qlachaussee\AppData\Local\Tesseract-OCR\tesseract.exe'
-
 # %%
 import pytesseract as tess
 from PIL import Image
@@ -74,7 +68,7 @@ from translate import Translator
 iso = pd.read_csv("C:/Users/qlachaussee/Documents/CNAM 2/Python/Fichier_de_donnees/ISO.csv", sep=";")
 translator= Translator(to_lang="fr")
 
-listeChemin = glob.glob("C:/Users/qlachaussee/Documents/CNAM 2/Python/Fichier_de_donnees/Passeport interieur/*.jpg")
+listeChemin = glob.glob("C:/Users/qlachaussee/Documents/CNAM 2/Python/Fichier_de_donnees/Visa/*.jpg")
 
 for i in range(len(listeChemin)):
     mrz = read_mrz(listeChemin[i])
