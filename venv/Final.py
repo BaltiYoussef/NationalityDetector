@@ -18,7 +18,7 @@ tess.pytesseract.tesseract_cmd = 'C:\\Program Files\\Tesseract-OCR\\tesseract.ex
 
 
 # on instancie la base de donnée des code ISO 3
-iso = pd.read_csv("C:/Users/youssef.balti/Desktop/CNAM/Deuxieme_Annee/Donnees_temporelles_et_spatiales/Projet/General/General/ISO.csv", sep=";")
+iso = pd.read_csv("./../src/Data/ISO.csv", sep=";")
 
 # on instancie une liste vide pour les nationalités identifiées sur les passeports
 identified_passports = []
@@ -31,7 +31,7 @@ translator = Translator(to_lang="fr")
 # %% On utilise passportEye pour les Passeports
 
 # on va chercher l'ensemble des fichiers concernant les passeports
-liste_fichiers = glob.glob("C:/Users/youssef.balti/Desktop/CNAM/Deuxieme_Annee/Donnees_temporelles_et_spatiales/Projet/General/General/Fichier_de_donnees/Passeport_interieur/*.jpg")
+liste_fichiers = glob.glob("./../src/Data/Passeport interieur/*.jpg")
 # on instancie un kpi de réussite
 res = 0
 
@@ -55,6 +55,7 @@ for i in range(len(liste_fichiers)):
 
         # on affiche le résultat
         print(f"{bcolors.WIN}{nom_fichier} vient de {pays_fr} car {country}")
+        # on ajoute le nationalité identifié à notre liste identifiées
         identified_passports.append(f"{nom_fichier}")
         # on incrémente le kpi
         res += 1
@@ -62,6 +63,7 @@ for i in range(len(liste_fichiers)):
     # si une erreur apparait, on affiche l'échec
     except:
         print(f"{bcolors.FAIL}{nom_fichier} n'a pas été identifié")
+        # on ajoute le nationalité à notre liste non identifiées
         unidentified_passports.append(f"{nom_fichier}")
 
 # on affiche le taux de réussite
@@ -71,7 +73,7 @@ print(f"{bcolors.KPI}{kpi}% de réussite")
 # %% On fait passporteye pour les Visa
 
 # on va chercher l'ensemble des fichiers concernant les visas
-liste_fichiers = glob.glob("C:/Users/youssef.balti/Desktop/CNAM/Deuxieme_Annee/Donnees_temporelles_et_spatiales/Projet/General/General/Fichier_de_donnees/Visa/*.jpg")
+liste_fichiers = glob.glob(("./../src/Data/Fichier_de_donnees/Visa/*.jpg")
 # on instancie un kpi de réussite
 res = 0
 # on instancie une liste vide pour les nationalités identifiées sur les visas
@@ -98,6 +100,7 @@ for i in range(len(liste_fichiers)):
 
         # on affiche le résultat
         print(f"{bcolors.WIN}{nom_fichier} vient de {pays_fr} car {country}")
+        # on ajoute le nationalité identifié à notre liste
         identified_visas.append(f"{nom_fichier}")
         # on incrémente le kpi
         res += 1
@@ -105,6 +108,7 @@ for i in range(len(liste_fichiers)):
     # si une erreur apparait, on affiche l'échec
     except:
         print(f"{bcolors.FAIL}{nom_fichier} n'a pas été identifié")
+        # on ajoute le nationalité  à notre liste non identifiées
         unidentified_visas.append(f"{nom_fichier}")
 
 # on affiche le taux de réussite
@@ -116,13 +120,13 @@ print(f"{bcolors.KPI}{kpi}% de réussite")
 # pour chaque fichier dans la liste des fichiers
 for i in range(len(liste_fichiers)):
 
-    # on lit l'image et identifie les informations du Machine Readable Zone
-    mrz = read_mrz(liste_fichiers[i])
     # on identifie le nom du fichier qui expose le résultat attendue du programme
     nom_fichier = liste_fichiers[i].split("\\")[-1]
 
-    # on essaye de le transformer en dictionnaire de données
     try:
+        # on lit l'image et identifie les informations du Machine Readable Zone
+        mrz = read_mrz(liste_fichiers[i])
+        # on essaye de le transformer en dictionnaire de données
         mrz_data = mrz.to_dict()
         # si la transformation a fonctionné, on relève le code ISO 3 du document
         country = mrz_data['country']
@@ -133,6 +137,7 @@ for i in range(len(liste_fichiers)):
 
         # on affiche le résultat
         print(f"{bcolors.WIN}{nom_fichier} vient de {pays_fr} car {country}")
+        # on ajoute le nationalité identifié à notre liste identifiées
         identified_visas.append(f"{nom_fichier}")
         # on incrémente le kpi
         res += 1
@@ -140,6 +145,7 @@ for i in range(len(liste_fichiers)):
     # si une erreur apparait, on affiche l'échec
     except:
         print(f"{bcolors.FAIL}{nom_fichier} n'a pas été identifié")
+        # on ajoute le nationalité à notre liste non identifiées
         unidentified_visas.append(f"{nom_fichier}")
 
 # on affiche le taux de réussite
@@ -148,7 +154,7 @@ print(f"{bcolors.KPI}{kpi}% de réussite")
 
 
 # on va chercher l'ensemble des fichiers concernant les cartes d'identité
-liste_fichiers = glob.glob("C:/Users/youssef.balti/Desktop/CNAM/Deuxieme_Annee/Donnees_temporelles_et_spatiales/Projet/General/General/Fichier_de_donnees/Carte ID/*.jpg")
+liste_fichiers = glob.glob("./../src/Data/Carte ID/*.jpg")
 
 # on instancie un kpi de réussite
 res = len(liste_fichiers)
@@ -168,30 +174,40 @@ for i in range(len(liste_fichiers)):
     # on test la présence des mots clés et on affiche le résultat
     if "BELGIË" in text or "BELGIQUE" in text or "BELGIEN" in text or "BELGIUM" in text:
         print(f"{bcolors.WIN}{nom_fichier} est belge")
+        # on ajoute le nationalité identifié à notre liste identifiées
         identified_Ids.append(f"{nom_fichier}")
     elif "National Identity Card" in text or "British" in text:
         print(f"{bcolors.WIN}{nom_fichier} est anglais")
+        # on ajoute le nationalité identifié à notre liste identifiées
         identified_Ids.append(f"{nom_fichier}")
     elif "IDFRA" in text or "FRANÇAISE" in text:
         print(f"{bcolors.WIN}{nom_fichier} vient de France")
+        # on ajoute le nationalité identifié à notre liste identifiées
         identified_Ids.append(f"{nom_fichier}")
     elif "DEUTSCH" in text:
         print(f"{bcolors.WIN}{nom_fichier} vient d'Allemagne")
+        # on ajoute le nationalité identifié à notre liste identifiées
         identified_Ids.append(f"{nom_fichier}")
     elif "ITALIANA" in text:
         print(f"{bcolors.WIN}{nom_fichier} vient d'Italie")
+        # on ajoute le nationalité identifié à notre liste identifiées
+        identified_Ids.append(f"{nom_fichier}")
     elif "Reeczpospolita" in text or "Polska" in text:
         print(f"{bcolors.WIN}{nom_fichier} vient de Pologne")
+        # on ajoute le nationalité identifié à notre liste identifiées
         identified_Ids.append(f"{nom_fichier}")
     elif "PORTUGAL" in text or "PRT" in text:
         print(f"{bcolors.WIN}{nom_fichier} vient du Portugal")
+        # on ajoute le nationalité identifié à notre liste identifiées
         identified_Ids.append(f"{nom_fichier}")
     elif "ESPANA" in text:
         print(f"{bcolors.WIN}{nom_fichier} vient d'Espagne")
+        # on ajoute le nationalité identifié à notre liste identifiées
         identified_Ids.append(f"{nom_fichier}")
     # sinon on affiche l'échec
     else:
         print(f"{bcolors.FAIL}{nom_fichier} n'a pas été identifié")
+        # on ajoute le nationalité à notre liste non identifiées
         unidentified_Ids.append(f"{nom_fichier}")
         # on décrémente le kpi
         res -= 1
@@ -219,26 +235,25 @@ import cv2
 # on recupere les chemins des fichiers non identifiées pour les passeports à partir de la liste unidentified_passports
 CheminUnidentifiedPassports=[]
 for l in range(len(unidentified_passports)):
-    CheminUnidentifiedPassports.append(os.path.join("C:/Users/youssef.balti/Desktop/CNAM/Deuxieme_Annee/Donnees_temporelles_et_spatiales/Projet/General/General/Fichier_de_donnees/Passeport_interieur/",unidentified_passports[l]))
+    CheminUnidentifiedPassports.append(os.path.join("./../src/Data/Passeport interieur/",unidentified_passports[l]))
 
 # on recupere les images des passeports non identifiées
 for i in range(len(CheminUnidentifiedPassports)):
     img = cv2.imread(CheminUnidentifiedPassports[i])
     #transformation des images en niveaux de gris
     img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-    # _, result = cv2.threshold(img,35,255,cv2.THRESH_BINARY)
     #on fait le thresholding avec l'algorithme thresh binary
     result = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 81, 4)
-    # result = cv2.threshold(img,0,255,cv2.THRESH_OTSU)
-    # print('Original Dimensions : ', img.shape)
     # on redimensionne l'image
     scale_percent = 500  # percent of ori ginal size
     width = int(result.shape[1] * scale_percent / 100)
     height = int(result.shape[0] * scale_percent / 100)
     dim = (width, height)
-    resized = cv2.cv2.resize(result, dim)
-    # print('Resized Dimensions : ', resized.shape)
-    # cv2.imshow('Result', resized)
+    # on redimensionne la taille de l'image si elle ne depasse pas 360000 pixels
+    if (result.shape[1] * result.shape[0] < 360000):
+        resized = cv2.cv2.resize(result, dim)
+    else:
+        resized = result
     # on sauvegarde l'image dans un chemin pour que ensuite la méthode read_mrz l'utilise
     cv2.imwrite("C:/Users/youssef.balti/Documents/image.jpg", resized)
     mrz = read_mrz("C:/Users/youssef.balti/Documents/image.jpg")
@@ -269,34 +284,28 @@ for i in range(len(CheminUnidentifiedPassports)):
 # on recupere les images des visas non identifiées
 CheminUnidentifiedVisas=[]
 for l in range(len(unidentified_visas)):
-    CheminUnidentifiedVisas.append(os.path.join("C:/Users/youssef.balti/Desktop/CNAM/Deuxieme_Annee/Donnees_temporelles_et_spatiales/Projet/General/General/Fichier_de_donnees/Visa/",unidentified_visas[l]))
+    CheminUnidentifiedVisas.append(os.path.join("./../src/Data/Fichier_de_donnees/Visa/",unidentified_visas[l]))
 
 # on effectue les transformations pour les visas
 for i in range(len(CheminUnidentifiedVisas)):
     img = cv2.imread(CheminUnidentifiedVisas[i])
     img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-    # _, result = cv2.threshold(img,35,255,cv2.THRESH_BINARY)
     result = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 81, 4)
-    # result = cv2.threshold(img,0,255,cv2.THRESH_OTSU)
-    # print('Original Dimensions : ', img.shape)
     scale_percent = 500  # percent of ori ginal size
     width = int(result.shape[1] * scale_percent / 100)
     height = int(result.shape[0] * scale_percent / 100)
     dim = (width, height)
+    # on redimensionne la taille de l'image si elle ne depasse pas 360000 pixels
     if (result.shape[1] * result.shape[0] < 360000):
         resized = cv2.cv2.resize(result, dim)
     else:
         resized = result
-    # print('Resized Dimensions : ', resized.shape)
-    # cv2.imshow('Result', resized)
-    cv2.imwrite("C:/Users/youssef.balti/Documents/image.jpg", resized)
+    cv2.imwrite("./../src/Data/image.jpg", resized)
     # on identifie le nom du fichier qui expose le résultat attendue du programme
-    nom_fichier = CheminUnidentifiedVisas[i].split(
-        "C:/Users/youssef.balti/Desktop/CNAM/Deuxieme_Annee/Donnees_temporelles_et_spatiales/Projet/General/General/Fichier_de_donnees/Visa/")[
-        -1]
+    nom_fichier = CheminUnidentifiedVisas[i].split("./../src/Data/Fichier_de_donnees/Visa/")[-1]
     # on essaye de le transformer en dictionnaire de données
     try:
-        mrz = read_mrz("C:/Users/youssef.balti/Documents/image.jpg")
+        mrz = read_mrz("./../src/Data/image.jpg")
         mrz_data = mrz.to_dict()
         # si la transformation a fonctionné, on relève le code ISO 3 du document
         country = mrz_data['country']
@@ -307,6 +316,7 @@ for i in range(len(CheminUnidentifiedVisas)):
 
         # on affiche le résultat
         print(f"{bcolors.WIN}{nom_fichier} vient de {pays_fr} car {country}")
+        # on le rajoute à notre liste idetifiée s'il est detecté et on l'enleve de la liste non identifié
         identified_passports.append(f"{nom_fichier}")
         unidentified_passports.remove(f"{nom_fichier}")
 
@@ -318,16 +328,13 @@ for i in range(len(CheminUnidentifiedVisas)):
 # on recupere les images des ID non identifiées
 CheminUnidentifiedIDs=[]
 for l in range(len(unidentified_Ids)):
-    CheminUnidentifiedIDs.append(os.path.join("C:/Users/youssef.balti/Desktop/CNAM/Deuxieme_Annee/Donnees_temporelles_et_spatiales/Projet/General/General/Fichier_de_donnees/Carte ID/",unidentified_Ids[l]))
+    CheminUnidentifiedIDs.append(os.path.join("./../src/Data/Carte ID/",unidentified_Ids[l]))
 
 # pour chaque fichier dans la liste des fichiers
 for i in range(len(CheminUnidentifiedIDs)):
     img = cv2.imread(CheminUnidentifiedIDs[i])
     img = cv2.cvtColor(img,cv2.COLOR_RGB2GRAY)
-    #_, result = cv2.threshold(img,35,255,cv2.THRESH_BINARY)
     result = cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,81,4)
-    #result = cv2.threshold(img,0,255,cv2.THRESH_OTSU)
-    #print('Original Dimensions : ', img.shape)
     scale_percent = 500  # percent of ori ginal size
     width = int(result.shape[1] * scale_percent / 100)
     height = int(result.shape[0] * scale_percent / 100)
@@ -339,7 +346,7 @@ for i in range(len(CheminUnidentifiedIDs)):
     # on la transforme en chaine de caractère
     text = tess.image_to_string(img)
     # on identifie le nom du fichier qui expose le résultat attendue du programme
-    nom_fichier = CheminUnidentifiedIDs[i].split("C:/Users/youssef.balti/Desktop/CNAM/Deuxieme_Annee/Donnees_temporelles_et_spatiales/Projet/General/General/Fichier_de_donnees/Carte ID/")[-1]
+    nom_fichier = CheminUnidentifiedIDs[i].split("./../src/Data/Carte ID/")[-1]
 
     # on test la présence des mots clés et on affiche le résultat
     if "BELGIË" in text or "BELGIQUE" in text or "BELGIEN" in text or "BELGIUM" in text:
